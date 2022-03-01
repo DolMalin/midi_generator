@@ -18,6 +18,7 @@
 
 typedef enum e_note
 {
+	NONE = 0,
 	C0 = 24,
 	C0s, D0, D0s, E0, F0, F0s, G0, G0s, A0, A0s, B0,
 	C1, C1s, D1, D1s, E1, F1, F1s, G1, G1s, A1, A1s, B1,
@@ -43,7 +44,8 @@ typedef enum e_scale
 	MIXOLYDIAN,
 	AEOLIAN,
 	LOCRIAN,
-	MINOR_HUNGARIAN
+	MINOR_HUNGARIAN,
+	ALGERIAN
 }			t_scale;
 
 typedef	struct	s_data
@@ -56,6 +58,6 @@ typedef	struct	s_data
 void	write_midi_header(FILE* f, unsigned char smf, unsigned short tracks_nb, unsigned short nbdiv);
 void	write_track(FILE *f, t_data *data);
 
-t_note	get_rand_note(t_note tone, t_scale scale);
+t_note	get_rand_note(t_note tone, t_scale scale, t_note last);
 size_t	get_rand_len(void);
 #endif

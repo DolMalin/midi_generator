@@ -42,6 +42,9 @@ static char	**get_scale_pattern(t_scale scale)
 		case MINOR_HUNGARIAN :
 			output = ft_split("W-H-3H-H-H-3H-H", '-');
 			break;
+		case ALGERIAN :
+			output = ft_split("W-H-3H-H-H-3H-H-W-H-W", '-');
+			break;
 	}
 	if (!output)
 		return (NULL);
@@ -96,16 +99,53 @@ static t_note	*get_scale(t_note start, char **pattern)
 	return (output);	
 }
 
-t_note	get_rand_note(t_note tone, t_scale scale)
+size_t	get_note_pos(t_note n, t_note *scale_array)
+{
+	size_t	i;
+
+	i = 0;
+	while (scale_array[i])
+	{
+		if (scale_array[i] == n)
+			return (i);
+		i++;
+	}
+	return (NONE);
+}
+
+
+t_note	get_rand_note(t_note tone, t_scale scale, t_note last)
 {
 	t_note	*scale_array;
 	char	**pattern;
 	size_t	n;
+	size_t	temp;
+	size_t	temp2;
 	t_note	note;
 
 	pattern = get_scale_pattern(scale);
 	scale_array = get_scale(tone, pattern);
-	n = rand() % get_scale_len(pattern);
+	if (last == NONE)
+		n = rand() % get_scale_len(pattern);
+	else
+	{
+		temp = rand() % 4;
+		temp2 = rand() % 100;
+		if (temp2 < 50)
+		{
+			if ((get_note_pos(last, scale_array) + temp) > get_scale_len(pattern))
+				n = get_note_pos(last, scale_array) - temp;
+			else
+				n = get_note_pos(last, scale_array) + temp;
+		}
+		else
+		{
+			if ((get_note_pos(last, scale_array) + temp) < get_scale_len(pattern))
+				n = get_note_pos(last, scale_array) + temp;
+			else
+				n = get_note_pos(last, scale_array) - temp;
+		}
+	}
 	note = scale_array[n];
 	ft_free_tab((void **)pattern);
 	free(scale_array);
@@ -117,10 +157,12 @@ size_t	get_rand_len(void)
 	size_t	n;
 
 	n = rand() % 100;
-	if (n < 10)
+	if (n < 20)
 		return (NOIRE / 4);
-	else if (n < 30)
-		return (NOIRE / 2);
+	else if (n < 40)
+		return (NOIRE / 3);
+	else if ( n < 60)
+		return (NOIRE/2);
 	else if ( n < 80)
 		return (NOIRE);
 	else

@@ -7,8 +7,8 @@ int	main(void)
 	t_data	*data;
 
 	data = malloc(sizeof(t_data));
-	data->tone = D2;
-	data->scale = MINOR_PENTATONIC;
+	data->tone = C2;
+	data->scale = IONIAN;
 	srand(time(NULL));
 	f = fopen("assets/file.mid", "wb");
 	write_midi_header(f, 1, 1, 128);

@@ -111,46 +111,28 @@ static void write_blank_note(FILE *f, unsigned long len)
 void	write_track(FILE *f, t_data *data)
 {
 	unsigned long	mark = write_track_header(f);
+	size_t			i = 0;
+	t_note			last;
+	t_note			current;
 
 	write_tempo(f, 500000);
-	write_note(f, get_rand_note(data->tone, data->scale), 64, get_rand_len());
-	write_note(f, get_rand_note(data->tone, data->scale), 64, get_rand_len());
-	write_note(f, get_rand_note(data->tone, data->scale), 64, get_rand_len());
-	write_note(f, get_rand_note(data->tone, data->scale), 64, get_rand_len());
-	write_note(f, get_rand_note(data->tone, data->scale), 64, get_rand_len());
-	write_note(f, get_rand_note(data->tone, data->scale), 64, get_rand_len());
-	write_note(f, get_rand_note(data->tone, data->scale), 64, get_rand_len());
-	write_note(f, get_rand_note(data->tone, data->scale), 64, get_rand_len());
-	write_note(f, get_rand_note(data->tone, data->scale), 64, get_rand_len());
-	write_note(f, get_rand_note(data->tone, data->scale), 64, get_rand_len());
-	write_note(f, get_rand_note(data->tone, data->scale), 64, get_rand_len());
-	write_note(f, get_rand_note(data->tone, data->scale), 64, get_rand_len());
-	write_note(f, get_rand_note(data->tone, data->scale), 64, get_rand_len());
-	write_note(f, get_rand_note(data->tone, data->scale), 64, get_rand_len());
-	write_note(f, get_rand_note(data->tone, data->scale), 64, get_rand_len());
-	write_note(f, get_rand_note(data->tone, data->scale), 64, get_rand_len());
-	write_note(f, get_rand_note(data->tone, data->scale), 64, get_rand_len());
-	write_note(f, get_rand_note(data->tone, data->scale), 64, get_rand_len());
-	write_note(f, get_rand_note(data->tone, data->scale), 64, get_rand_len());
-	write_note(f, get_rand_note(data->tone, data->scale), 64, get_rand_len());
-	write_note(f, get_rand_note(data->tone, data->scale), 64, get_rand_len());
-	write_note(f, get_rand_note(data->tone, data->scale), 64, get_rand_len());
-	write_note(f, get_rand_note(data->tone, data->scale), 64, get_rand_len());
-	write_note(f, get_rand_note(data->tone, data->scale), 64, get_rand_len());
-	write_note(f, get_rand_note(data->tone, data->scale), 64, get_rand_len());
-	write_note(f, get_rand_note(data->tone, data->scale), 64, get_rand_len());
-	write_note(f, get_rand_note(data->tone, data->scale), 64, get_rand_len());
-	write_note(f, get_rand_note(data->tone, data->scale), 64, get_rand_len());
-	write_note(f, get_rand_note(data->tone, data->scale), 64, get_rand_len());
-	write_note(f, get_rand_note(data->tone, data->scale), 64, get_rand_len());
-	write_note(f, get_rand_note(data->tone, data->scale), 64, get_rand_len());
-	write_note(f, get_rand_note(data->tone, data->scale), 64, get_rand_len());
-	write_note(f, get_rand_note(data->tone, data->scale), 64, get_rand_len());
-	write_note(f, get_rand_note(data->tone, data->scale), 64, get_rand_len());
-	write_note(f, get_rand_note(data->tone, data->scale), 64, get_rand_len());
-	write_note(f, get_rand_note(data->tone, data->scale), 64, get_rand_len());
-	write_note(f, get_rand_note(data->tone, data->scale), 64, get_rand_len());
-	write_note(f, get_rand_note(data->tone, data->scale), 64, get_rand_len());
+	while (i < 100)
+	{
+		if (i == 0)
+		{
+			current = get_rand_note(data->tone, data->scale, NONE);
+			write_note(f, current, 64, get_rand_len());
+		}
+		else
+		{
+			current = get_rand_note(data->tone, data->scale, last);
+			while (current == last)
+				current = get_rand_note(data->tone, data->scale, last);
+			write_note(f, current, 64, get_rand_len());
+		}
+		last = current;
+		i++;
+	}
 	write_blank_note(f, NOIRE);
 	write_track_end(f);
 	write_track_size(f, mark);
